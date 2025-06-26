@@ -4,7 +4,7 @@ import re
 import os
 
 # 目标URL列表
-urls = ['https://ip.164746.xyz/ipTop10.html', 
+urls = ['https://ip.164746.xyz/', 
         'https://cf.090227.xyz'
         ]
 
@@ -25,7 +25,7 @@ with open('ip.txt', 'w') as file:
         soup = BeautifulSoup(response.text, 'html.parser')
         
         # 根据网站的不同结构找到包含IP地址的元素
-        if url == 'https://ip.164746.xyz/ipTop10.html':
+        if url == 'https://ip.164746.xyz/':
             elements = soup.find_all('tr')
         elif url == 'https://cf.090227.xyz':
             elements = soup.find_all('tr')
