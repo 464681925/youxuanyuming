@@ -95,7 +95,7 @@ if __name__ == "__main__":
             if subdomain == 'bestcf':
                 ip_list = ip_list[:5]
             elif subdomain == 'api':
-                ip_list = ip_list[:10]
+                ip_list = ip_list[:40]
             else:
                 ip_list = ip_list[:5]
 
