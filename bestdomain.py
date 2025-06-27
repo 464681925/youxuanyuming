@@ -58,23 +58,26 @@ def update_cloudflare_dns(ip_list, api_token, zone_id, subdomain, domain):
 if __name__ == "__main__":
     api_token = os.getenv('CF_API_TOKEN')
     
-    # 示例URL和子域名对应的IP列表
     subdomain_ip_mapping = {
-        'bestcf': 'https://raw.githubusercontent.com/ymyuuu/IPDB/refs/heads/main/BestCF/bestcfv4.txt',  # #域名一，bestcf.域名.com
-        'api': 'https://raw.githubusercontent.com/464681925/youxuanyuming/refs/heads/main/ip.txt', #域名二，api.域名.com
-        # 添加更多子域名和对应的IP列表URL
+        'bestcf': 'https://raw.githubusercontent.com/ymyuuu/IPDB/refs/heads/main/BestCF/bestcfv4.txt',
+        'api': 'https://raw.githubusercontent.com/464681925/youxuanyuming/refs/heads/main/ip.txt',
     }
     
     try:
-        # 获取Cloudflare域区ID和域名
         zone_id, domain = get_cloudflare_zone(api_token)
         
         for subdomain, url in subdomain_ip_mapping.items():
-            # 获取IP列表
             ip_list = get_ip_list(url)
-            # 删除现有的DNS记录
+            
+            # ✅ 根据子域名限制保留数量
+            if subdomain == 'bestcf':
+                ip_list = ip_list[:5]
+            elif subdomain == 'api':
+                ip_list = ip_list[:10]
+            else:
+                ip_list = ip_list[:5]  # 默认保留前5个，可自定义
+            
             delete_existing_dns_records(api_token, zone_id, subdomain, domain)
-            # 更新Cloudflare DNS记录
             update_cloudflare_dns(ip_list, api_token, zone_id, subdomain, domain)
             
     except Exception as e:
